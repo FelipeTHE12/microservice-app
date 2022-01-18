@@ -42,7 +42,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "tokenzer"
+      process.env.JWT_KEY!
     );
 
     //Session

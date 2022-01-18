@@ -8,6 +8,7 @@ import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
+import { CustomError } from "./errors/custom-error";
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.use(signupRouter);
 app.use(errorHandler);
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT não definido");
+  }
   try {
     await connect("mongodb://auth-mongo-srv:27017/auth");
   } catch (err) {
