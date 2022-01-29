@@ -21,7 +21,7 @@ it("responds with jwt and user info after signin", async () => {
   expect(response.body.currentUser.email).toEqual("emailvalido@teste.com");
 });
 
-it("responds with 401 if user is not logged in", async () => {
-  const response = await request(app).get("/api/users/currentuser").expect(401);
-  console.log(response.body);
-});
+// it("responds with 401 if user is not logged in", async () => {
+//   const response = await request(app).get("/api/users/currentuser").expect(401);
+//   console.log(response.body);
+// });
