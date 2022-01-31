@@ -30,7 +30,4 @@ app.use(createTicketRouter);
 
 app.use(errorHandler);
 
-app.all("*", async (req, res) => {
-  throw new NotFoundError();
-});
 export { app };
