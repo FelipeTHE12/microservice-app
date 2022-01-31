@@ -24,3 +24,11 @@ build:
         manual:
           - src: "**/*.ts"
             dest: .
+    - image: docker12fozxe/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
