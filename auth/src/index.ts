@@ -5,8 +5,13 @@ const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error("JWT não definido");
   }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error("URI MONGO não definido");
+  }
+
   try {
-    await connect("mongodb://auth-mongo-srv:27017/auth");
+    await connect(process.env.MONGO_URI);
   } catch (err) {
     console.log(err);
   }
