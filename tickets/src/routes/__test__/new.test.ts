@@ -1,5 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
+import { Ticket } from "../../models/ticket";
 import getCookieSignIn from "../../test/getCookieSignIn";
 
 it("Has a route handler to listen for post(/api/tickets) requests", async () => {
@@ -67,11 +68,22 @@ it("returns an error if an invalid price is provided", async () => {
 });
 
 it("creates a ticket with success when valid inputs", async () => {
+  let tickets = await Ticket.find({});
+  expect(tickets.length).toEqual(0);
+
   const cookie = getCookieSignIn();
+  const title = 'abcde';
+  const price = 30;
 
   await request(app)
     .post("/api/tickets")
     .set("Cookie", cookie)
-    .send({ title: "asdufihasidu", price: "" })
+    .send({ title, price })
     .expect(201);
+
+    tickets = await Ticket.find({});
+    expect(tickets.length).toEqual(1);
+    expect(tickets[0].title).toEqual(title);
+    expect(tickets[0].price).toEqual(price);
+
 });
