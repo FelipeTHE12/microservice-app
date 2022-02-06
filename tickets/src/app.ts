@@ -9,6 +9,7 @@ import {
   requireAuth,
 } from "@12ticketsapp/common";
 import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(currentUser);
 
 //Routes
 app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 app.use(errorHandler);
 
