@@ -1,6 +1,6 @@
 import request from "supertest";
-import { app } from "../app";
-import getCookieSignIn from "../test/getCookieSignIn";
+import { app } from "../../app";
+import getCookieSignIn from "../../test/getCookieSignIn";
 
 const createTicket = () => {
   const cookie = getCookieSignIn();

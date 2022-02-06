@@ -1,10 +1,11 @@
 import request from "supertest";
 import { app } from "../app";
 import jwt from "jsonwebtoken";
+import Mongoose from "mongoose";
 
 export const getCookieSignIn = () => {
   const payload = {
-    id: "1lk24j124l",
+    id: new Mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
 
