@@ -1,12 +1,11 @@
+import Mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import getCookieSignIn from "../../test/getCookieSignIn";
 
 it("returns a 404 if the ticket is not found", async () => {
-  await request(app)
-    .get("/api/tickets/ahuisdhfiuaodhsfiuhasid")
-    .send()
-    .expect(404);
+  const id = new Mongoose.Types.ObjectId().toHexString();
+  await request(app).get(`/api/tickets/${id}`).send().expect(404);
 });
 
 it("returns a 200 if the ticket is found", async () => {
