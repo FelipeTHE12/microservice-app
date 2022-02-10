@@ -11,15 +11,17 @@ const createTicket = () => {
     .expect(201);
 };
 
-it("returns a list of tickets", async () => {
-  await createTicket();
-  await createTicket();
-  await createTicket();
-  await createTicket();
-  await createTicket();
-  await createTicket();
+describe("Ticket Listing", () => {
+  test("returns a list of tickets", async () => {
+    await createTicket();
+    await createTicket();
+    await createTicket();
+    await createTicket();
+    await createTicket();
+    await createTicket();
 
-  const response = await request(app).get("/api/tickets").send().expect(200);
+    const response = await request(app).get("/api/tickets").send().expect(200);
 
-  expect(response.body.length).toEqual(6);
+    expect(response.body.length).toEqual(6);
+  });
 });
