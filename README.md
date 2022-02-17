@@ -9,4 +9,5 @@ Using this repo to study microservices and event driven architectures, using cou
  - MongoDB
  - Docker/Kubernetes
  - NATS
+ - Jest/TDD
  - TypeScript
