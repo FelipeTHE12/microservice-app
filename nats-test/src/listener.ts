@@ -1,4 +1,5 @@
-import nats from "node-nats-streaming";
+import nats, { Message } from "node-nats-streaming";
+import { type } from "os";
 
 console.clear();
 
@@ -11,7 +12,10 @@ stan.on("connect", () => {
 
   const subscription = stan.subscribe("ticket:created");
 
-  subscription.on("message", (msg) => {
+  subscription.on("message", (msg: Message) => {
     console.log("Message received");
+    const data = msg.getData();
+
+    typeof data === "string" && console.log(data);
   });
 });

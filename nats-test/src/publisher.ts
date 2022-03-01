@@ -11,7 +11,7 @@ stan.on("connect", () => {
 
   const data = JSON.stringify({
     id: "123456",
-    title: "sfaasd",
+    title: "TICKET tal",
     price: 30,
   });
 
