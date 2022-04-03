@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@sgtickets/common": "^1.0.24"
+  }
+}
