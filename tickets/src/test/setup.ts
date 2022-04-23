@@ -4,6 +4,8 @@ import { app } from "../app";
 
 let mongoServer: any;
 
+jest.mock("../nats-wrapper");
+
 beforeAll(async () => {
   process.env.JWT_KEY = "dsahfyasdudfha";
 

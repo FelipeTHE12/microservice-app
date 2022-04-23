@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import getCookieSignIn from "../../test/getCookieSignIn";
+import { natsWrapper } from "../../nats-wrapper";
 
 describe("New Ticket", () => {
   test("Has a route handler to listen for post(/api/tickets) requests", async () => {
@@ -87,4 +88,18 @@ describe("New Ticket", () => {
     expect(tickets[0].title).toEqual(title);
     expect(tickets[0].price).toEqual(price);
   });
+});
+
+test("will publish an event", async () => {
+  const cookie = getCookieSignIn();
+  const title = "abcde";
+  const price = 30;
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({ title, price })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
