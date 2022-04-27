@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { requireAuth, validateRequest } from "@sgtickets/common";
+import { OrderStatus, requireAuth, validateRequest } from "@sgtickets/common";
 import { body } from "express-validator";
 import mongoose, { mongo } from "mongoose";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
-import { NotFoundError } from "@12ticketsapp/common";
+import { BadRequestError, NotFoundError } from "@12ticketsapp/common";
 
 const router = express.Router();
 
@@ -26,6 +26,21 @@ router.post(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    const existingFoundOrder = await Order.findOne({
+      ticket: ticket,
+      status: {
+        $in: [
+          OrderStatus.Created,
+          OrderStatus.AwaitingPayment,
+          OrderStatus.Complete,
+        ],
+      },
+    });
+
+    if (existingFoundOrder) {
+      throw new BadRequestError("Ticket já está em uso");
     }
 
     res.send({});
