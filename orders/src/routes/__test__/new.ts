@@ -28,22 +28,25 @@ router.post(
       throw new NotFoundError();
     }
 
-    const existingFoundOrder = await Order.findOne({
-      ticket: ticket,
-      status: {
-        $in: [
-          OrderStatus.Created,
-          OrderStatus.AwaitingPayment,
-          OrderStatus.Complete,
-        ],
-      },
-    });
+    const ticketIsReserved = await ticket.isReserved();
 
-    if (existingFoundOrder) {
+    if (ticketIsReserved) {
       throw new BadRequestError("Ticket já está em uso");
     }
 
-    res.send({});
+    const expirationDate = new Date();
+    expirationDate.setSeconds(expirationDate.getSeconds() + 15 * 60);
+
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.Created,
+      expiresAt: expirationDate,
+      ticket,
+    });
+
+    await order.save();
+
+    res.status(201).send(order);
   }
 );
 
