@@ -1,5 +1,5 @@
-import { OrderStatus } from "@sgtickets/common";
 import mongoose from "mongoose";
+import { OrderStatus } from "@sgtickets/common";
 import { TicketDoc } from "./ticket";
 
 export { OrderStatus };
@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: Object.values(OrderStatus),
+      emum: Object.values(OrderStatus),
       default: OrderStatus.Created,
     },
     expiresAt: {
