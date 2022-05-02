@@ -4,6 +4,7 @@ import Mongoose from "mongoose";
 import getCookieSignIn from "../../test/getCookieSignIn";
 import { Order, OrderStatus } from "../../models/order";
 import { Ticket } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 test("Return error if the ticket !EXIST", async () => {
   const ticketId = new Mongoose.Types.ObjectId().toHexString();
@@ -24,6 +25,7 @@ test("Return error if the ticket IS RESERVED", async () => {
     status: OrderStatus.Created,
     expiresAt: new Date(),
   });
+
   await order.save();
   const cookie = getCookieSignIn();
   await request(app)
@@ -42,4 +44,17 @@ test("RESERVS a ticket with success", async () => {
     .set("Cookie", cookie)
     .send({ ticketId: ticket.id })
     .expect(201);
+});
+
+test("Has to emit an event when a order is created", async () => {
+  const ticket = Ticket.build({ title: "titulo ticket etst", price: 30 });
+  await ticket.save();
+  const cookie = getCookieSignIn();
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", cookie)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
